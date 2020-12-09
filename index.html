@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Objects</title>
+</head>
+<body>
+    <script>
+        
+        var toDoList = {
+            // _id: {
+            //     _text,
+            //     _status,
+            // },
+        };
+        
+        // Object.defineProperty(toDoList, '_id', {
+        //     enumerable: false,
+        // });
+        
+        var toDoListMethods = {
+            createNote(yourNote, ifDone) {
+                var newNote = {
+                    text: yourNote,
+                    status: ifDone,
+                };
+                
+                return toDoList[Date.now()] = newNote;
+            },
+            deleteNote() {},
+            editNote() {},
+            changeStatus() {},
+        }
+        console.log(createNote('to drink some tea', false));
+
+    </script>
+</body>
+</html>
