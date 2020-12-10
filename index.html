@@ -8,31 +8,50 @@
 <body>
     <script>
         
+        function makeCounter() { // Очень хотелось спрятать ее в метод createNote, но оттуда она категорически не работает(
+            let count = 1;
+
+            return function() {
+                return count++;
+            };                
+        };
+        var counter = makeCounter();
+
         var toDoList = {
-            // _id: {
-            //     _text,
-            //     _status,
-            // },
+            notes: {},
+
+            createNote(yourNote) {
+                var newNote = {};
+                newNote.id = Date.now();
+                newNote.text = yourNote;
+                newNote.status = false;
+
+                this.notes['note' + counter()] = newNote;
+                return newNote;
+            },
+
+            deleteNote(idToDelete) { // тут точно какая-то ерунда, но не могу проверить, так как айди при каждом обновлении переписываются
+                for (var key in notes) {
+                    if (key.id === idToDelete)
+                    delete key;
+                    return;
+                }                 
+            },
+
+            editNote() {},
+
+            changeStatus() {},
         };
         
-        // Object.defineProperty(toDoList, '_id', {
-        //     enumerable: false,
-        // });
+        Object.freeze(toDoList);
+
+        Object.defineProperty(toDoList, 'notes'['note[1-9]'['id']], { // не помогло. И вообще интересно, корректна ли такая запись
+            writable: false,
+        })
         
-        var toDoListMethods = {
-            createNote(yourNote, ifDone) {
-                var newNote = {
-                    text: yourNote,
-                    status: ifDone,
-                };
-                
-                return toDoList[Date.now()] = newNote;
-            },
-            deleteNote() {},
-            editNote() {},
-            changeStatus() {},
-        }
-        console.log(createNote('to drink some tea', false));
+        toDoList.createNote('to drink some tea');
+        toDoList.createNote('to make my homework'); // создаются с одинаковым айди, пока не придумала, как решить проблему
+        console.log(toDoList);
 
     </script>
 </body>
