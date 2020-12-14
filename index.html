@@ -3,22 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Objects</title>
+    <title>ES6</title>
 </head>
 <body>
     <script>
         
-        function makeCounter() { // Очень хотелось спрятать ее в метод createNote, но оттуда она категорически не работает(
-            let count = 1;
-
-            return function() {
-                return count++;
-            };                
-        };
-        var counter = makeCounter();
-
         var toDoList = {
-            notes: {},
+            notes: [],
 
             createNote(yourNote) {
                 var newNote = {};
@@ -26,31 +17,40 @@
                 newNote.text = yourNote;
                 newNote.status = false;
 
-                this.notes['note' + counter()] = newNote;
-                return newNote;
+                toDoList.notes.push(newNote);
             },
 
-            deleteNote(idToDelete) { // тут точно какая-то ерунда, но не могу проверить, так как айди при каждом обновлении переписываются
-                for (var key in notes) {
-                    if (key.id === idToDelete)
-                    delete key;
-                    return;
-                }                 
+            deleteNote(idToDelete) {
+                for (let i = 0; i < toDoList.notes.length; i++) {
+                    if (toDoList.notes[i][id] === idToDelete) {
+                        toDoList.notes.splice(toDoList.notes[i], 1);
+                        return toDoList.notes[i];
+                    }
+                }
             },
 
-            editNote() {},
+            editNote(idToEdit, editedText) {
+                for (let i = 0; i < toDoList.notes.length; i++) {
+                    if (toDoList.notes[i][id] === idToEdit) {
+                        toDoList.notes[i][text] = editedText;
+                        break;
+                    }
+                }
+            },
 
-            changeStatus() {},
+            changeStatus(idToChangeStatus) {
+                for (let i = 0; i < toDoList.notes.length; i++) {
+                    if (toDoList.notes[i][id] === idToChangeStatus) {
+                        console.log(toDoList.notes[i][id]);
+                        toDoList.notes[i][status] = true;
+                        break;
+                    }
+                }
+            },
         };
-        
-        Object.freeze(toDoList);
-
-        Object.defineProperty(toDoList, 'notes'['note[1-9]'['id']], { // не помогло. И вообще интересно, корректна ли такая запись
-            writable: false,
-        })
-        
+                
         toDoList.createNote('to drink some tea');
-        toDoList.createNote('to make my homework'); // создаются с одинаковым айди, пока не придумала, как решить проблему
+        toDoList.createNote('to make my homework'); // создаются с одинаковым айди, setTimeout?
         console.log(toDoList);
 
     </script>
