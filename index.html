@@ -8,72 +8,127 @@
 <body>
     <script>
         
-        var toDoList = {
+        const toDoList = {
             _notes: [],
 
-            createNote(yourNote) {
-                var newNote = {};
-                newNote.id = Date.now();
-                newNote.text = yourNote;
-                newNote.status = false;
+            createNote(text, id = Date.now()) {
+                const newNote = {
+                    text,
+                    id,                    
+                    status: false,
+                };
 
-                toDoList._notes.push(newNote);
+                this._notes.push(newNote);
 
                 return newNote;
             },
 
-            deleteNote(idToDelete) {
-                for (let i = 0; i < toDoList._notes.length; i++) {
-                    if (toDoList._notes[i].id === idToDelete) {
-                        toDoList._notes.splice(toDoList._notes[i], 1);
+            deleteNote(id) {
+                const index = this._findNoteByID(id);
 
-                        return toDoList._notes[i];
-                    }
+                if (index >= 0) {
+                    return this._notes.splice(index, 1);
                 }
             },
 
-            editNote(idToEdit, editedText) {
-                for (let i = 0; i < toDoList._notes.length; i++) {
-                    if (toDoList._notes[i].id === idToEdit) {
-                        toDoList._notes[i].text = editedText;
-                        
-                        return toDoList._notes[i];
-                    }
+            editNote(id, editedText) {
+                const index = this._findNoteByID(id);
+
+                if (index >= 0 && editedText) {
+                    this._notes[index].text = editedText;
                 }
+                
+                return this._notes[index];
             },
 
-            changeStatus(idToChangeStatus) {
-                for (let i = 0; i < toDoList._notes.length; i++) {
-                    if (toDoList._notes[i].id === idToChangeStatus) {
-                        toDoList._notes[i].status = true;
+            changeStatus(id) {
+                const index = this._findNoteByID(id);
 
-                        return toDoList._notes[i];
-                    }
+                if (index >= 0) {
+                    this._notes[index].status = true;
                 }
+
+                return this._notes[index];
             },
+
+            _findNoteByID (id) {
+                return this._notes.findIndex((note) => note.id === id);
+            }
         };
 
-        toDoList.createNote('drink some tea');
-        setTimeout(toDoList.createNote, 1000, 'make my homework'); // создаются с одинаковым айди все равно
-        setTimeout(toDoList.createNote, 2000, 'relax');
-        setTimeout(toDoList.createNote, 3000, 'earn money');
-        
-        console.log(toDoList);
+        Object.freeze(toDoList);
 
-        Object.defineProperties(toDoList, {
-            createNote: {
-                configurable: false,
-            },
-            deleteNote: {
-                configurable: false,
-            },
-            editNote: {
-                configurable: false,
-            },
-            changeStatus: {
-                configurable: false,
-            },
-        });
+        toDoList.createNote('drink some tea', 12);
+        toDoList.createNote('make my homework', 13);
+        toDoList.createNote('relax', 14);
+        toDoList.createNote('earn money', 15);
+        
+        // Код, который я написала до занятия:
+
+        // var toDoList = {
+        //     _notes: [],
+
+        //     createNote(yourNote) {
+        //         var newNote = {};
+        //         newNote.id = Date.now();
+        //         newNote.text = yourNote;
+        //         newNote.status = false;
+
+        //         toDoList._notes.push(newNote);
+
+        //         return newNote;
+        //     },
+
+        //     deleteNote(idToDelete) {
+        //         for (let i = 0; i < toDoList._notes.length; i++) {
+        //             if (toDoList._notes[i].id === idToDelete) {
+        //                 toDoList._notes.splice(toDoList._notes[i], 1);
+
+        //                 return toDoList._notes[i];
+        //             }
+        //         }
+        //     },
+
+        //     editNote(idToEdit, editedText) {
+        //         for (let i = 0; i < toDoList._notes.length; i++) {
+        //             if (toDoList._notes[i].id === idToEdit) {
+        //                 toDoList._notes[i].text = editedText;
+                        
+        //                 return toDoList._notes[i];
+        //             }
+        //         }
+        //     },
+
+        //     changeStatus(idToChangeStatus) {
+        //         for (let i = 0; i < toDoList._notes.length; i++) {
+        //             if (toDoList._notes[i].id === idToChangeStatus) {
+        //                 toDoList._notes[i].status = true;
+
+        //                 return toDoList._notes[i];
+        //             }
+        //         }
+        //     },
+        // };
+
+        // toDoList.createNote('drink some tea');
+        // setTimeout(toDoList.createNote, 1000, 'make my homework'); // создаются с одинаковым айди все равно
+        // setTimeout(toDoList.createNote, 2000, 'relax');
+        // setTimeout(toDoList.createNote, 3000, 'earn money');
+        
+        // Object.defineProperties(toDoList, {
+        //     createNote: {
+        //         configurable: false,
+        //     },
+        //     deleteNote: {
+        //         configurable: false,
+        //     },
+        //     editNote: {
+        //         configurable: false,
+        //     },
+        //     changeStatus: {
+        //         configurable: false,
+        //     },
+        // });
 
     </script>
 </body>
